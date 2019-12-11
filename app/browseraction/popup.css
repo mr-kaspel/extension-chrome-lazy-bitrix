@@ -1,0 +1,287 @@
+@import url('https://fonts.googleapis.com/css?family=VT323');
+html,
+body {
+	/*font-family: Helvetica Neue, Arial, sans-serif;
+	font-size: 12px;*/
+	margin: 0;
+	min-height: 180px;
+	padding: 0;
+}
+
+body {
+	background: #eee;
+	margin: 10px;
+	border-radius: 8px;
+}
+
+html {
+	width: 316px;
+	background: #fff;
+}
+
+/*задаём настройки для заголовков первого уровня*/
+h1 {
+	font-size: 22px;
+	font-weight: 400;
+	margin: 0;
+	color: #1f2c3c;
+}
+
+a:link,
+a:visited {
+	color: #000000;
+	outline: 0;
+	text-decoration: none;
+}
+
+/*задаём ширину картинки*/
+img {
+	width: 30px;
+	/*ширина изображений*/
+}
+
+.modal-header {
+	align-items: center;
+	height: 50px;
+}
+
+.content {
+	border: 1px solid #eee;
+	border-radius: 30px 30px 8px 8px;
+	padding-top: 10px;
+	background: blanchedalmond;
+}
+
+.modal-content {
+	padding: 10px;
+	text-align: justify;
+	word-spacing: -0.3ex;
+	background: #fff;
+	border: 1px solid #eee;
+	border-radius: 10px;
+	box-shadow: 4px 5px 9px 4px rgba(0, 0, 0, .1);
+	margin: 0 15px;
+}
+
+.modal-option {
+	padding: 10px 20px;
+}
+
+.modal-option > .flex-container > .flex:nth-child(1) p {
+	display: inline-block;
+	padding: 0;
+	margin: 0;
+}
+
+.modal-content > div {
+	margin: 0;
+	padding: 5px 15px;
+	border: 2px solid #248fea;
+	border-radius: 5px;
+	background: linear-gradient(45deg, #e8f3ff, #d0dbed);
+}
+
+.modal-content > div > h4 {
+	margin: 4px 0;
+	text-transform: uppercase;
+}
+
+.modal-content > div > p {
+	font-size: 10px;
+	margin: 0;
+}
+
+.modal-foter {
+	border-top: 1px solid #fff;
+}
+
+.modal-icons,
+.modal-foter {
+	margin-top: 10px;
+	padding: 4px;
+}
+
+.modal-header div {
+	display: inline-block;
+}
+
+.modal-header small {
+	display: inline-block;
+	color: #000;
+}
+
+.logo {
+	vertical-align: super;
+	text-transform: uppercase;
+	font-weight: 900;
+}
+
+.logo-icon {
+	margin: 0 12px 0px 6px;
+	display: inline-block;
+}
+
+.flex-container {
+	display: flex;
+	justify-content: space-between;
+	padding: 2px 0px;
+}
+.modal-icons .flex{
+	margin: 0 auto;
+	width: 90%;
+}
+
+.modal-icons .flex-container button {
+	width: 49%;
+	height: 50px;
+	display: inline-block;
+	outline: none;
+	font-size: 14px;
+	color: #fff;
+	cursor: pointer;
+	border: none;
+	border-radius: 10px;
+	box-shadow: 0px 0px 9px 2px rgba(0, 0, 0, .3);
+	background: #4030e8;
+	margin-bottom: 10px;
+}
+
+.modal-icons .flex-container button:hover {
+	box-shadow: inset 0px 0px 7px 2px rgba(0, 0, 0, .2);
+}
+
+.modal-foter .flex-container .flex {
+	width: auto;
+	padding-right: 8px;
+}
+.modal-foter .flex-container {
+	justify-content: flex-end;
+}
+
+a.transfer-tasks {
+	margin: 10px;
+	font-size: 14px;
+	display: inline-block;
+}
+
+.message-line {
+	color: lightslategray;
+	text-align: left;
+	display: inline-block;
+	width: 100% !important;
+	font-size: 10px;
+}
+
+.modal-foter .flex-container button {
+	display: inline-block;
+	background: none;
+	border: none;
+	outline: none;
+	font-size: 14px;
+	color: #04030a;
+	cursor: pointer;
+}
+
+/*задаём настройки для контейнеров с иконками*/
+.flex {
+	opacity: 1; /*параметр непрозрачности иконок*/
+}
+.modal-foter .flex:hover {
+	opacity: 0.4; /*уровень непрозрачности при наведении курсора на элемент*/
+}
+.flex .fa {
+	font-size: 40px;
+	color: #2f5876;
+}
+
+/*начало чекбокс*/
+input[type="checkbox"] {
+	font-size: 30px;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	width: 40px;
+	height: 20px;
+	background: #656565;
+	position: relative;
+	border-radius: 30px;
+	outline: none;
+	vertical-align: middle;
+	box-shadow: inset 1px 2px rgba(0, 0, 0, .3);
+	transition: 1s;
+	margin: 0;
+}
+
+input[type="checkbox"]:checked {
+	background: #248fea;
+}
+
+
+input[type="checkbox"]:before {
+	content: "";
+	display: block;
+	width: 14px;
+	height: 14px;
+	margin: 3px;
+	position: absolute;
+	/*left: 0;*/
+	background: #fff;
+	border-radius: 50%;
+	cursor: pointer;
+	box-shadow: 0 2px 0 0 rgba(0, 0, 0, .5);
+	transition: .5s;
+	-webkit-animation: bias-l .5s infinite linear;
+	animation: bias-l .5s linear;
+}
+
+input[type="checkbox"]:checked:before {
+	/*left: calc(100% - 30px);*/
+	right: 0;
+	transition: .5s;
+	-webkit-animation: bias-r .4s infinite linear;
+	animation: bias-r .4s linear;
+}
+
+@-webkit-keyframes bias-l {
+	0% {
+		right: 0;
+	}
+	25% {
+		right: 5px;
+	}
+	 50% {
+		right: 15px;
+	}
+	70% {
+		right: 17px;
+	}
+	80% {
+		right: 20px;
+	}
+	90% {
+		right: 17px;
+	}
+	100% {
+		right: 20px;
+	}
+}
+
+@-webkit-keyframes bias-r {
+	0% {
+		right: 20px;
+	}
+	25% {
+		right: 17px;
+	}
+	50% {
+		border-radius: 0;
+		right: 15px;
+	}
+	75% {
+		right: 5px;
+	}
+	100% {
+		right: 0;
+	}
+}
+/*конец чекбокс*/

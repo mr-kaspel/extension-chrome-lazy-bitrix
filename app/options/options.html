@@ -1,0 +1,138 @@
+<html>
+	<meta charset="UTF-8">
+	<head><title>My Test Extension Options</title></head>
+	<link rel="stylesheet" href="options.css">
+	<link rel="stylesheet" href="lib/codemirror.css">
+	<body>
+		<div class="tabs">
+			<div class="tabs-button active" tab-number="1">Основные настройки</div>
+			<div class="tabs-button" tab-number="2">Сервис сбора</div>
+			<div class="tabs-button" tab-number="3">Дополнительно</div>
+			<div class="tabs-button" tab-number="4">Описание</div>
+
+			<button id="save">Save</button>
+			<div id="status"></div>
+		</div>
+		<div class="tabs-body">
+			<div class="tabs-body-content active" tab-content="1">
+				<label>
+					Основная страница:
+					<small>/company/personal/user/41/tasks/</small>
+					<input type="text" name="main-page" id="main-page" class="main-page" value="">
+				</label>
+				<label>
+					Страница задачи:
+					<small>/company/personal/user/41/tasks/task/view/</small>
+					<input type="text" name="task-page" id="task-page" class="task-page" value="">
+				</label>
+				<label>
+					Формула расчета рейтинга:
+					<input type="text" name="rating-formula" id="rating-formula">
+				</label>
+				<label>
+					Список типов задач:
+					<small>значения необходимо указывать через запятую.</small>
+					<textarea name="types-of-tasks" id="types-of-tasks" rows="5" class="types-of-tasks"></textarea>
+				</label>
+				<label>
+					Список задач, которые нельзя переносить:
+					<small>значения необходимо указывать через запятую. Если в заголовке задачи будет вхождения по заданному значению, будет выведено сообщение.</small>
+					<textarea name="not-tolerate" id="not-tolerate" rows="5" class="not-tolerate"></textarea>
+				</label>
+				<label>
+					Сортировка задач в отчете:
+					<small>значения необходимо указывать через запятую. Список задач будет формироваться в соответствии с порядком значений.</small>
+					<textarea name="sorting" id="sorting" rows="5" class="sorting"></textarea>
+				</label>
+				<label>
+					Среднее количество задач на день:
+					<small>в соответствии с этим значением, задачи будут распределены на ближайшие дни.</small>
+					<input type="text" name="mean" id="mean">
+				</label>
+				<label>
+					Твой основной тип задач:
+					<select name="main-type-of-task" id="main-type-of-task"></select>
+				</label>
+			</div>
+			<div class="tabs-body-content" tab-content="2">
+				<div class="update-date">
+					<p>Дата и время последнего обновления:</p>
+					<b>
+						<data id="data">00.00.0000</data> /
+						<time id="time">00:00:00</time>
+					</b>
+				</div>
+				<label>
+					Адрес сервиса:
+					<input type="text" name="project-service" id="project-service" class="project-service" value="">
+				</label>
+				<small>Сервис где указаны типы пакеты клиентов.</small>
+				<p>Данные нельзя изменить. Для обновления данных необходимо перейти на страницу сервиса.</p>
+				<div id="service-collection"></div>
+			</div>
+			<div class="tabs-body-content" tab-content="3">
+				<div>
+					<label>
+						Горячие клавиши:
+						<input type="text" name="hotkeys" id="hotkeys" class="hotkeys" value="">
+					</label>
+					<small>Горячие клавиши для переноса задач.</small>
+				</div>
+				<div>
+					<label>
+						Задачи, у которых не указан крайний срок не трогать:
+						<input type="checkbox" id="exceptions" class="exceptions">
+					</label>
+				</div>
+				<div>
+					<label>
+						<input type="checkbox" id="consultants" class="consultants">
+						отключить оналйн-консультант
+					</label>
+				</div>
+				<div>
+					<label>
+						<input type="checkbox" id="consultants" class="consultants">
+						отключить оналйн-консультант
+					</label>
+				</div>
+				<div>
+					<label>
+						<input type="checkbox" id="flags" class="flags">
+						доп. отметки для задач
+					</label>
+				</div>
+			</div>
+			<div class="tabs-body-content" tab-content="4">
+				<p>Тут, возможно, будет какое-то описание и небольшая инструкция.</p>
+				<div class="additional-description">
+					<div class="flags">
+						<h3>Дополнительные обозначения</h3>
+						<p>Актуальное значение</p>
+						<div class="flags-red"><p>Нет модернизации</p></div>
+						<div class="flags-pink"><p>Нет контента</p></div>
+						<p>За прошлый месяц</p>
+						<div class="flags-red-striped"><p>Переработка по модернизации</p></div>
+						<div class="flags-pink-striped"><p>Переработка по контенту</p></div>
+					</div>
+				</div>
+				<p><b>После внесения изменений в настройках, необходимо обновить страницы.</b></p>
+				<h3>Как работать с расширением:</h3>
+				<ol>
+					<li>выдели задачи, которые необходимо перенести на следующий день и добавить в отчет;</li>
+					<li>укажи тип задачи из выпадающего списка;</li>
+					<li>нажми "Перенести" или "Копировать";</li>
+					<li>перейдите в отчет и вставьте содержимое из буфера обмена.</li>
+			</ol>
+				<p><b>"Перенести"</b> - кнопка позволяет перенести выделенные задачи на следующий рабочий день, сформировать и отсортировать список поместив готовый результат в буфер обмена. Если на следующем дне уже есть задачи они будут перенесены на день вперед.</p>
+				<p><b>"Копировать"</b> - кнопка позволяет сформировать и отсортировать список выделенных ранее задач и поместить готовый отчет в буфер обмена.</p>
+				<p>Сортировка происходит в соответствии с заданным значение в поле "Сортировка задач в отчете" находящегося на вкладке "основные настройки".</p>
+				<p><mark>Если в компании указанно несколько проектов, берется только первый!</mark></p>
+				<p>Почта жалоб и предложений: email@google.com</p>
+			</div>
+		</div>
+		<script src="lib/codemirror.js"></script>
+		<script src="lib/mode/javascript/javascript.js"></script>
+		<script src="options.js"></script>
+	</body>
+</html>

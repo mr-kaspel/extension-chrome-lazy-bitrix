@@ -1,0 +1,150 @@
+body {
+	font-size: 14px;
+
+}
+label {
+	margin-left: 15px;
+}
+label input:not([type="checkbox"]), label textarea {
+	display: block;
+	width: 400px;
+	margin: 5px 15px;
+	resize: none;
+}
+label input[type="checkbox"] {
+	vertical-align: middle;
+}
+
+button {
+	background: #7f00ff;
+	background: -webkit-linear-gradient(to right, #7f00ff, #e100ff);
+	background: linear-gradient(to right, #7f00ff, #e100ff);
+	color: #fff;
+	border: none;
+	margin-left: 20px;
+	padding: 5px 45px;
+	display: inline-block;
+	text-transform: uppercase;
+	cursor: pointer;
+	outline: none;
+	border-radius: 5px;
+}
+
+button:hover {
+	background: #6eb76e;
+}
+
+#status {
+	text-align: center;
+	font-size: 16px;
+	color: darkgray;
+	display: inline-block;
+	margin-left: 15px;
+}
+
+small {
+	display: block;
+	margin-left: 15px;
+	color: #a0a0a0;
+}
+
+.tabs {
+	border-bottom: 2px solid #eee;
+}
+
+.tabs .tabs-button {
+	display: inline-block;
+	background: #7f00ff;
+	background: -webkit-linear-gradient(to right, #7f00ff, #e100ff);
+	background: linear-gradient(to right, #7f00ff, #e100ff);
+	color: #fff;
+	padding: 5px 15px;
+	border-radius: 5px 5px 0 0;
+	box-shadow: inset 0px -3px 7px 0px rgba(0, 0, 0, .5);
+	cursor: pointer;
+	text-transform: lowercase;
+}
+
+.tabs .tabs-button.active {
+	box-shadow: none;
+}
+
+.tabs-body .tabs-body-content {
+	display: none;
+	padding: 25px 15px;
+	border: 1px solid #eee;
+}
+
+.tabs-body .tabs-body-content.active {
+	display: block;
+}
+
+.update-date > p {
+	display: inline-block;
+}
+
+#service-collection {
+	width: 600px;
+	margin-top: 20px;
+}
+
+.CodeMirror-gutter.CodeMirror-linenumbers {
+	width: 29px !important;
+}
+
+.CodeMirror-sizer {
+	margin-left: 30px !important;
+	margin-bottom: -17px !important;
+	border-right-width: 13px !important;
+	min-height: 807px !important;
+	padding-right: 17px !important;
+	padding-bottom: 0px !important;
+}
+
+.flags > p {
+	color: #7d7d7d;
+}
+
+.flags-red p,
+.flags-pink p,
+.flags-red-striped p,
+.flags-pink-striped p {
+	line-height: 20px;
+	margin-left: 30px;
+}
+
+.flags-red,
+.flags-pink,
+.flags-red-striped,
+.flags-pink-striped {
+	position: relative;
+}
+
+.flags-red:before,
+.flags-red-striped:before {
+	background: red;
+}
+
+.flags-pink:before,
+.flags-pink-striped:before {
+	background: pink;
+}
+
+.flags-red-striped:before,
+.flags-pink-striped:before {
+	background-image: linear-gradient(to bottom left,hsla(0,0%,100%,.5) 25%,transparent 0,transparent 50%,hsla(0,0%,100%,.5) 0,hsla(0,0%,100%,.5) 75%,transparent 0,transparent);
+	background-size: 16px 16px;
+}
+
+.flags-red:before,
+.flags-pink:before,
+.flags-red-striped:before,
+.flags-pink-striped:before {
+	content: '';
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}

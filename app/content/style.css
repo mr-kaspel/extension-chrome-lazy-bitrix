@@ -1,0 +1,85 @@
+.custom-title-row-table {
+	border-bottom: 3px #eef2f4 solid;
+	background-color: #fff;
+	vertical-align: middle;
+}
+.column-plan {
+	background: palegreen;
+	text-align: center;
+	border-bottom: 1px #eef2f4 solid;
+}
+.task-type-selector {
+		text-align: center;
+		border-bottom: 1px solid rgb(238, 242, 244);
+		width: 7%;
+		background: #fff;
+}
+.task-type-selector select {
+	border: none;
+	background: none;
+	outline: none;
+	color: #2067b0;
+}
+.main-grid:not(.main-grid-ondrag) .main-grid-row:hover>.task-type-selector {
+	background-color: #f6f8f9;
+}
+
+.main-grid-row-checked .main-grid-cell, .main-grid-row-checked .task-type-selector {
+	background-color: #f5fcde;
+}
+
+.main-grid:not(.main-grid-ondrag) .main-grid-row-checked:hover>.task-type-selector {
+	background-color: #faffeb;
+}
+
+/* Для страницы задачи */
+.selection-line {
+	border-top: 1px solid #e9eaec;
+	font: 300 15px/24px "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+	color: #525c69;
+	padding-top: 10px;
+	margin-top: 10px;
+}
+
+.selection-line input {
+	vertical-align: middle;
+}
+
+.flags-red,
+.flags-pink,
+.flags-red-p,
+.flags-pink-p {
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 10px;
+	width: 20px;
+	height: 15px;
+	position: relative;
+	clip-path: polygon(100% 0%, 70% 50%, 100% 100%, 0% 100%, 0% 50%, 0% 0%);
+}
+
+.flags-red,
+.flags-red-p {
+	background: red;
+}
+
+.flags-pink,
+.flags-pink-p {
+	background: pink;
+}
+
+.flags-red-p,
+.flags-pink-p {
+	background-image: linear-gradient(to bottom left,hsla(0,0%,100%,.5) 25%,transparent 0,transparent 50%,hsla(0,0%,100%,.5) 0,hsla(0,0%,100%,.5) 75%,transparent 0,transparent);
+	background-size: 16px 16px;
+}
+
+.task-detail-subtitle-status {
+	display: inline-block;
+}
+
+#list-tasks {
+	position: fixed;
+	z-index: 0;
+	opacity: 0;
+}
