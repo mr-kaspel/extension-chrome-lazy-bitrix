@@ -17,12 +17,18 @@
 			<div class="tabs-body-content active" tab-content="1">
 				<label>
 					Основная страница:
-					<small>/company/personal/user/41/tasks/</small>
+					<div class="hint">
+						<p>?</p>
+						<span><small>/company/personal/user/41/tasks/</small></span>
+					</div>
 					<input type="text" name="main-page" id="main-page" class="main-page" value="">
 				</label>
 				<label>
 					Страница задачи:
-					<small>/company/personal/user/41/tasks/task/view/</small>
+					<div class="hint">
+						<p>?</p>
+						<span><small>/company/personal/user/41/tasks/task/view/</small></span>
+					</div>
 					<input type="text" name="task-page" id="task-page" class="task-page" value="">
 				</label>
 				<label>
@@ -31,22 +37,34 @@
 				</label>
 				<label>
 					Список типов задач:
-					<small>значения необходимо указывать через запятую.</small>
+					<div class="hint">
+						<p>?</p>
+						<span><small>значения необходимо указывать через запятую.</small></span>
+					</div>
 					<textarea name="types-of-tasks" id="types-of-tasks" rows="5" class="types-of-tasks"></textarea>
 				</label>
 				<label>
 					Список задач, которые нельзя переносить:
-					<small>значения необходимо указывать через запятую. Если в заголовке задачи будет вхождения по заданному значению, будет выведено сообщение.</small>
+					<div class="hint">
+						<p>?</p>
+						<span><small>значения необходимо указывать через запятую. Если в заголовке задачи будет вхождения по заданному значению, будет выведено сообщение.</small></span>
+					</div>
 					<textarea name="not-tolerate" id="not-tolerate" rows="5" class="not-tolerate"></textarea>
 				</label>
 				<label>
 					Сортировка задач в отчете:
-					<small>значения необходимо указывать через запятую. Список задач будет формироваться в соответствии с порядком значений.</small>
+					<div class="hint">
+						<p>?</p>
+						<span><small>значения необходимо указывать через запятую. Список задач будет формироваться в соответствии с порядком значений.</small></span>
+					</div>
 					<textarea name="sorting" id="sorting" rows="5" class="sorting"></textarea>
 				</label>
 				<label>
 					Среднее количество задач на день:
-					<small>в соответствии с этим значением, задачи будут распределены на ближайшие дни.</small>
+					<div class="hint">
+						<p>?</p>
+						<span><small>в соответствии с этим значением, задачи будут распределены на ближайшие дни.</small></span>
+					</div>
 					<input type="text" name="mean" id="mean">
 				</label>
 				<label>
@@ -64,9 +82,12 @@
 				</div>
 				<label>
 					Адрес сервиса:
+					<div class="hint">
+						<p>?</p>
+						<span><small>Сервис где указаны типы пакеты клиентов.</small></span>
+					</div>
 					<input type="text" name="project-service" id="project-service" class="project-service" value="">
 				</label>
-				<small>Сервис где указаны типы пакеты клиентов.</small>
 				<p>Данные нельзя изменить. Для обновления данных необходимо перейти на страницу сервиса.</p>
 				<div id="service-collection"></div>
 			</div>
@@ -78,30 +99,33 @@
 					</label>
 					<small>Горячие клавиши для переноса задач.</small>
 				</div>
-				<div>
-					<label>
-						Задачи, у которых не указан крайний срок не трогать:
-						<input type="checkbox" id="exceptions" class="exceptions">
-					</label>
-				</div>
-				<div>
-					<label>
-						<input type="checkbox" id="consultants" class="consultants">
-						отключить оналйн-консультант
-					</label>
-				</div>
-				<div>
-					<label>
-						<input type="checkbox" id="consultants" class="consultants">
-						отключить оналйн-консультант
-					</label>
-				</div>
-				<div>
-					<label>
-						<input type="checkbox" id="flags" class="flags">
-						доп. отметки для задач
-					</label>
-				</div>
+				<fieldset>
+					<legend>Чекбоксы дублируются в окне расширения</legend>
+					<div>
+						<label>
+							Задачи, у которых не указан крайний срок не трогать:
+							<input type="checkbox" id="exceptions" class="exceptions">
+						</label>
+					</div>
+					<div>
+						<label>
+							<input type="checkbox" id="consultants" class="consultants">
+							отключить оналйн-консультант
+						</label>
+					</div>
+					<div>
+						<label>
+							<input type="checkbox" id="consultants" class="consultants">
+							отключить оналйн-консультант
+						</label>
+					</div>
+					<div>
+						<label>
+							<input type="checkbox" id="flags" class="flags">
+							доп. отметки для задач
+						</label>
+					</div>
+				</fieldset>
 			</div>
 			<div class="tabs-body-content" tab-content="4">
 				<p>Тут, возможно, будет какое-то описание и небольшая инструкция.</p>

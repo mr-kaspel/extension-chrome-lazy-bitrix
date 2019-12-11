@@ -8,10 +8,11 @@ var mainPage = '/company/personal/user/41/tasks/',
 	sorting = ['общие', 'срочно', 'доп.оплата'],
 	hotkeys = 'Ctrl + Shift',
 	mainTypeOfTasks = 3,
-	mean = 7,
+	mean = 10,
 	exceptions = true,
 	settings = {},
-	changeCounter = 0; // колличество итераций по убыванию
+	changeCounter = 0, // колличество итераций по убыванию
+	countAJAX = 0; // счетчик для корректного отлова события переноса задач
 
 // проверяем сохранены настройки или нет
 chrome.storage.sync.get(['key'], function(result) {
@@ -61,8 +62,13 @@ chrome.webRequest.onCompleted.addListener(function(details) {
 			console.log(details.type);
 			// отслеживаем первый завершенные перенос задач
 			if(changeCounter > 0) {
-				//проверка должна быть лучше
-				if(details.url.indexOf('tasks.interface.toolbar/ajax.php' !== -1)) {
+					// первое обязательное событие
+					if(details.url.indexOf('F_CANCEL=Y') !== -1 && details.url.indexOf('clear_filter=Y') !== -1 && details.url.indexOf('IFRAME=N') !== -1 && details.url.indexOf('IFRAME=N') !== -1 && details.url.indexOf('current_fieldset=SOCSERV') !== -1 && details.url.indexOf('internal=true') !== -1 && details.url.indexOf('grid_action=showpage') !== -1 && details.url.indexOf('grid_action=showpage') !== -1) {
+					countAJAX = 1;
+				}
+				// второе обязательное событие + проверка счетчика
+				if(countAJAX == 1 && details.url.indexOf('tasks.interface.toolbar/ajax.php' !== -1)) {
+					countAJAX = 0;
 					console.log(true);
 					taskTransfer();
 				}
@@ -253,12 +259,16 @@ var generatedReport = function() {
 
 // определили, что это главная страница, передаем настроки и отправляем значения в content
 var contentsMain = function(settings) {
-	chrome.tabs.getSelected(null, function(tab) {
-		chrome.tabs.sendMessage(tab.id, {
-			type: "contentsMain",
-			settings: settings
-		});
-	});
+	chrome.tabs.query({
+		currentWindow: true,
+		active: true
+	},function (tabArray) {
+			chrome.tabs.sendMessage(tabArray[0].id, {
+				type: "contentsMain",
+				settings: settings
+			});
+		}
+	);
 }
 
 // определили, что это страница задачи, передаем настроки и отправляем значения в content

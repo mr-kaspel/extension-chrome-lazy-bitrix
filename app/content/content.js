@@ -59,6 +59,68 @@ function taskTransfer(changData, countObj) {
 		проверяем на выходные дни
 		проверяем на исключения из настроек
 	*/
+	//countObj.plan // колличество задач в плане
+	//countObj.task // общее кол. задач - планируемые
+	//countObj.itaretia
+	if(changData !== 1) {
+		// bias - смещение, arrTask - массив строк
+		// умножаем среднее значение задач на день на итерацию
+		var bias = (countObj.plan + countObj.task) - (countObj.itaretia - changData) * settings.options.mean,
+				arrTask = document.querySelectorAll('.main-grid-row.main-grid-row-body');
+		console.log(bias);
+		if(highlightTasks(bias, arrTask, changData)) {
+			// нажимаем "Применить"
+			// ...
+			// ...
+			// ...
+		} else {
+			//вывести сообщение о необходимости включить эту задачу в план на завтрашний день и повторить операцию
+			// ...
+			// ...
+			// ...
+		}
+	}
+}
+
+// выделение задач со смещением
+function highlightTasks(bias, arrTask, iter) {
+	var obPlan = JSON.parse(getCookie('plannedTasks')),
+			exclusion = splitArray(settings.options.ban), // массив исключений
+			d = new Date(), // значения текущей даты
+			dIteration = 0; // дата для итерации (текущая дата + кол. итераций iter)
+
+	for(var i = bias; i <= arrTask.length; i--) {
+		if(i === 0) break;
+		var elem = arrTask[i], // задача на странице
+				hostName = elem.querySelector('.tasks-list-crm-div-wrapper a').innerHTML.split(' - ')[0], // получаем доменное имя
+				nameTask = elem.querySelectorAll('.task-title').innerHTML, // название задачи
+				dateTask = elem.querySelectorAll('.task-deadline-datetime span')[0].getAttribute('onclick').split('\'')[1].split(' ')[0]; // дата установленная у задачи
+
+		// проверяем есть ли эта задача в плане на завтрашний день
+		if(obPlan[hostName] && obPlan[hostName]['checkbox']) {
+			// проверяем есть ли эта задача в исключениях
+			for(var j = 0; j < exclusion.length; j++) {
+				if(nameTask.indexOf(exclusion[j]) !== -1) {
+					// подсветить задачу из исключений
+					// ...
+					// ...
+					// ...
+					if(confirm("Вы не запланировали обязательную задачу, остоновиться?")) {
+						return false;
+					}
+					break;
+				}
+			}
+			// проверяем по дате (дата должна быть больше или равана планируемой для текущей итерации + проверка на выходные)
+			// ...
+			// ...
+			// ...
+		}
+	}
+}
+
+function splitArray(text) {
+	return text.replace(/\r?\n/g, '').split(',');
 }
 
 /*
