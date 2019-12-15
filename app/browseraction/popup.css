@@ -150,6 +150,13 @@ img {
 	box-shadow: inset 0px 0px 7px 2px rgba(0, 0, 0, .2);
 }
 
+button.transfer-tasks:disabled,
+button.copy-report:disabled {
+	background: #3528bd;
+	box-shadow: inset 0 0 20px 0px rgba(0, 0, 0, .4);
+	cursor: auto;
+}
+
 .modal-foter .flex-container .flex {
 	width: auto;
 	padding-right: 8px;

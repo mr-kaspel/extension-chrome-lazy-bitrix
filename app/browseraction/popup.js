@@ -42,6 +42,14 @@ window.onload = function () {
 	});
 
 	document.getElementById('flags-only').addEventListener('click', function() {
+		if(this.checked) {
+			document.querySelector('.transfer-tasks').setAttribute('disabled', 'true');
+			document.querySelector('.copy-report').setAttribute('disabled', 'true');
+		} else {
+			document.querySelector('.transfer-tasks').removeAttribute('disabled');
+			document.querySelector('.copy-report').removeAttribute('disabled');
+		}
+
 		chrome.storage.sync.set({
 			toggle: {
 				switch: this.closest('.modal-option').querySelector('#check-toggle').checked,
@@ -76,7 +84,11 @@ window.onload = function () {
 chrome.storage.sync.get(['toggle'], function(result) {
 	if(result.toggle !== undefined) {
 		if(result.toggle.switch) document.getElementById('check-toggle').setAttribute('checked', 'true');
-		if(result.toggle.flags) document.getElementById('flags-only').setAttribute('checked', 'true');
+		if(result.toggle.flags) {
+			document.getElementById('flags-only').setAttribute('checked', 'true');
+			document.querySelector('.transfer-tasks').setAttribute('disabled', 'true');
+			document.querySelector('.copy-report').setAttribute('disabled', 'true');
+		}
 		if(result.toggle.consultant) document.getElementById('check-consultant').setAttribute('checked', 'true');
 	}
 });

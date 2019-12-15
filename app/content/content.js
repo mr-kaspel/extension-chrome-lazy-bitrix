@@ -54,6 +54,18 @@ function taskTransfer(changData, countObj) {
 
 	console.log("Ничего пока не работает, но вот занчение счетчика, в контексте страницы: " + changData);
 
+
+	// обновляем доп. элементы на странице если это не первая итерация
+	if(changData < countObj.itaretia) displayContentsMain(settings);
+
+	//проверяем наличие доп. элементов на страниче, если элементов нет выводим сообщение
+	if(document.querySelectorAll('.in-terms-of').length === 0) {
+		chrome.extension.sendMessage({
+			type: "element-check"
+		});
+		return;
+	}
+
 	/*
 		идем с конца списка исключаю планируемые задачи
 		проверяем на выходные дни
@@ -65,58 +77,67 @@ function taskTransfer(changData, countObj) {
 	if(changData !== 1) {
 		// bias - смещение, arrTask - массив строк
 		// умножаем среднее значение задач на день на итерацию
-		var bias = (countObj.plan + countObj.task) - (countObj.itaretia - changData) * settings.options.mean,
-				arrTask = document.querySelectorAll('.main-grid-row.main-grid-row-body');
-		console.log(bias);
-		if(highlightTasks(bias, arrTask, changData)) {
-			// нажимаем "Применить"
-			// ...
-			// ...
-			// ...
-		} else {
-			//вывести сообщение о необходимости включить эту задачу в план на завтрашний день и повторить операцию
-			// ...
-			// ...
-			// ...
+		var bias = (countObj.plan + countObj.task) - (countObj.itaretia - changData) * settings.options.mean;
+		var dateTask = highlightTasks(bias, changData);
+
+		if(dateTask) {
+			document.querySelector('.main-dropdown.main-grid-panel-control').setAttribute('data-value', 'setdeadline');
+			document.querySelector('[name="ACTION_SET_DEADLINE_from"]').value = dateTask;
+			document.querySelector('.main-grid-buttons.apply').click();
+			document.querySelector('.popup-window-button.popup-window-button-accept').click();
 		}
 	}
 }
 
-// выделение задач со смещением
-function highlightTasks(bias, arrTask, iter) {
+// выделение задач по определенному смещению
+function highlightTasks(bias, iter) {
 	var obPlan = JSON.parse(getCookie('plannedTasks')),
-			exclusion = splitArray(settings.options.ban), // массив исключений
+			arrTask = document.querySelectorAll('.main-grid-row.main-grid-row-body'),
+			exclusion = settings.options.ban, // массив исключений
+			k = settings.options.mean,
 			d = new Date(), // значения текущей даты
-			dIteration = 0; // дата для итерации (текущая дата + кол. итераций iter)
+			dIteration = new Date(); // дата для итерации (текущая дата + кол. итераций iter)
+			dIteration.setDate(dIteration.getDate() + iter),
+			exceptions = true;
 
 	for(var i = bias; i <= arrTask.length; i--) {
-		if(i === 0) break;
-		var elem = arrTask[i], // задача на странице
-				hostName = elem.querySelector('.tasks-list-crm-div-wrapper a').innerHTML.split(' - ')[0], // получаем доменное имя
-				nameTask = elem.querySelectorAll('.task-title').innerHTML, // название задачи
-				dateTask = elem.querySelectorAll('.task-deadline-datetime span')[0].getAttribute('onclick').split('\'')[1].split(' ')[0]; // дата установленная у задачи
+		var elem = arrTask[i-1]; // задача на странице
+
+		if(k === 0 || i === 0) break;
+
+		var checkTack = elem.querySelector('.column-plan input').checked,
+				nameTask = elem.querySelector('.task-title').innerHTML, // название задачи
+				dateTask =elem.querySelectorAll('.task-deadline-datetime span')[0].getAttribute('onclick').split('\'')[1].split(' ')[0].split('.'); // дата установленная у задачи
+		dateTask =  new Date(dateTask[2], dateTask[1]-1, dateTask[0]);
 
 		// проверяем есть ли эта задача в плане на завтрашний день
-		if(obPlan[hostName] && obPlan[hostName]['checkbox']) {
+		if(checkTack) {
+			if(iter !== 1) continue;
+			// выделяем задачи из плана
+			elem.querySelector('.main-grid-cell-checkbox input').setAttribute('checked', 'true');
+		} else {
 			// проверяем есть ли эта задача в исключениях
 			for(var j = 0; j < exclusion.length; j++) {
 				if(nameTask.indexOf(exclusion[j]) !== -1) {
 					// подсветить задачу из исключений
-					// ...
-					// ...
-					// ...
-					if(confirm("Вы не запланировали обязательную задачу, остоновиться?")) {
+					elem.classList.add('prohibited');
+					if(exceptions) exceptions = confirm("Вы не запланировали задачу из исключений, остановиться?");
+					if(exceptions) {
 						return false;
 					}
-					break;
+					continue;
 				}
 			}
-			// проверяем по дате (дата должна быть больше или равана планируемой для текущей итерации + проверка на выходные)
-			// ...
-			// ...
-			// ...
+			// если дата, установленная у задачи, меньше планируемой выделяем её
+			if(dateTask < dIteration) {
+				k--;
+				elem.querySelector('.main-grid-cell-checkbox input').setAttribute('checked', 'true');
+			}
 		}
 	}
+	// проверить на выходные
+	// ..
+	return dIteration.getDate() + '.' + (dIteration.getMonth()+1) + '.' + dIteration.getFullYear() + ' 19:00:00';
 }
 
 function splitArray(text) {
