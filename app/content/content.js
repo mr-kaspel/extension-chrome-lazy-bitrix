@@ -114,6 +114,7 @@ function highlightTasks(bias, iter) {
 		if(checkTack) {
 			if(iter !== 1) continue;
 			// выделяем задачи из плана
+			mouseClickEmulation(elem.querySelector('.main-grid-cell-checkbox input'));
 			elem.querySelector('.main-grid-cell-checkbox input').setAttribute('checked', 'true');
 		} else {
 			// проверяем есть ли эта задача в исключениях
@@ -131,6 +132,7 @@ function highlightTasks(bias, iter) {
 			// если дата, установленная у задачи, меньше планируемой выделяем её
 			if(dateTask < dIteration) {
 				k--;
+				mouseClickEmulation(elem.querySelector('.main-grid-cell-checkbox input'));
 				elem.querySelector('.main-grid-cell-checkbox input').setAttribute('checked', 'true');
 			}
 		}
@@ -140,8 +142,14 @@ function highlightTasks(bias, iter) {
 	return dIteration.getDate() + '.' + (dIteration.getMonth()+1) + '.' + dIteration.getFullYear() + ' 19:00:00';
 }
 
-function splitArray(text) {
-	return text.replace(/\r?\n/g, '').split(',');
+// имитация нажатие на элемент
+function mouseClickEmulation(elem) {
+	var event = document.createEvent('MouseEvents'),
+			clientY = elem.getBoundingClientRect().top,
+			clientX = elem.getBoundingClientRect().left;
+
+	event.initMouseEvent('click', true, true, window, 1, screenX, screenY, clientX, clientY, false, false, false, false, 0, null);
+	elem.dispatchEvent(event);
 }
 
 /*
