@@ -1,6 +1,5 @@
 window.onload = function () {
 	var allButton = document.querySelectorAll('.modal-icons button');
-
 	// добавляем события к кнопка для вывода описания
 	for (var i = 0; i < allButton.length; i++) {
 		allButton[i].addEventListener('mouseover', function () {
@@ -91,4 +90,7 @@ chrome.storage.sync.get(['toggle'], function(result) {
 		}
 		if(result.toggle.consultant) document.getElementById('check-consultant').setAttribute('checked', 'true');
 	}
+
+	// добавляем ссылку на страницу настроек
+	document.querySelector('.modal-foter .transfer-tasks').href = 'chrome-extension://' + chrome.runtime.id + '/options/options.html'
 });
