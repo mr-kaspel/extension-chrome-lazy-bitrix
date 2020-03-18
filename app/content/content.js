@@ -9,7 +9,7 @@ chrome.extension.onMessage.addListener(function(message, sender, sendResponse) {
 	switch(message.type) {
 		case "sort":
 			// выполняем сортировку
-			// changeCounter делжен идти от обратного
+			// changeCounter должен идти от обратного
 			settings = message.settings;
 			changeCounter = changeCounter === 0 ? taskCounting(settings).itaretia : changeCounter-1;
 			taskTransfer(changeCounter, taskCounting(settings));
@@ -22,7 +22,7 @@ chrome.extension.onMessage.addListener(function(message, sender, sendResponse) {
 			displayContentsMain(message.settings);
 			break;
 		case "contentsTask":
-			// вывод содержиомго для страницы задачи
+			// вывод содержимого для страницы задачи
 			displayContentsTask(message.settings);
 			break;
 		case "contentsService":
@@ -81,7 +81,9 @@ function taskTransfer(changData, countObj) {
 		var dateTask = highlightTasks(bias, changData);
 
 		if(dateTask) {
-			document.querySelector('.main-dropdown.main-grid-panel-control').setAttribute('data-value', 'setdeadline');
+			// устанавлеваем параметры для перноса задач
+			document.querySelector('.main-dropdown.main-grid-panel-control').click();
+			document.querySelectorAll('.menu-popup-item.main-dropdown-item-not-selected')[2].click();
 			document.querySelector('[name="ACTION_SET_DEADLINE_from"]').value = dateTask;
 			document.querySelector('.main-grid-buttons.apply').click();
 			document.querySelector('.popup-window-button.popup-window-button-accept').click();
@@ -114,8 +116,13 @@ function highlightTasks(bias, iter) {
 		if(checkTack) {
 			if(iter !== 1) continue;
 			// выделяем задачи из плана
-			mouseClickEmulation(elem.querySelector('.main-grid-cell-checkbox input'));
-			elem.querySelector('.main-grid-cell-checkbox input').setAttribute('checked', 'true');
+			/***
+				нужно использовать другой объект для выделения $(' .main-grid-row.main-grid-row-body td').click()
+
+				для вызова окна выбора действия объект $('.main-dropdown.main-grid-panel-control').click()
+				для выбора действия из встплывающего окна document.querySelectorAll('.menu-popup-item.main-dropdown-item-not-selected')[2].click()
+			***/
+			elem.querySelector('td').click();
 		} else {
 			// проверяем есть ли эта задача в исключениях
 			for(var j = 0; j < exclusion.length; j++) {
@@ -132,8 +139,7 @@ function highlightTasks(bias, iter) {
 			// если дата, установленная у задачи, меньше планируемой выделяем её
 			if(dateTask < dIteration) {
 				k--;
-				mouseClickEmulation(elem.querySelector('.main-grid-cell-checkbox input'));
-				elem.querySelector('.main-grid-cell-checkbox input').setAttribute('checked', 'true');
+				elem.querySelector('td').click();
 			}
 		}
 	}
@@ -142,18 +148,8 @@ function highlightTasks(bias, iter) {
 	return dIteration.getDate() + '.' + (dIteration.getMonth()+1) + '.' + dIteration.getFullYear() + ' 19:00:00';
 }
 
-// имитация нажатие на элемент
-function mouseClickEmulation(elem) {
-	var event = document.createEvent('MouseEvents'),
-			clientY = elem.getBoundingClientRect().top,
-			clientX = elem.getBoundingClientRect().left;
-
-	event.initMouseEvent('click', true, true, window, 1, screenX, screenY, clientX, clientY, false, false, false, false, 0, null);
-	elem.dispatchEvent(event);
-}
-
 /*
-	полечаем:
+	получаем:
 		общ. коллечество задач - кол планируемых
 		кол. итераций, необходимых для переноса всех задач
 */
@@ -171,7 +167,7 @@ function taskCounting(settings) {
 	return countObj;
 }
 
-// попируем список выделенных задач в буфер обмена
+// копируем список выделенных задач в буфер обмена
 function copyGeneratedReport(settings) {
 	var objPlan = JSON.parse(getCookie('plannedTasks')),
 			listTasks = '',
@@ -216,8 +212,11 @@ function getCookie(name) {
 }
 
 function setCookie(name, value, options = {}) {
+	var date = new Date();
+	date = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 00, 00, 00);
 	options = {
 		path: '/',
+		expires: date.toUTCString()
 	};
 
 	let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
@@ -229,6 +228,7 @@ function setCookie(name, value, options = {}) {
 			updatedCookie += "=" + optionValue;
 		}
 	}
+	//console.log(updatedCookie);
 	document.cookie = updatedCookie;
 }
 
@@ -481,8 +481,9 @@ var dataCollection = function(settings) {
 			}
 		}
 	}
-	//сохраняем данные из сервиса в хранилище хрома
-	chrome.storage.sync.set({
+	//сохраняем данные из сервиса в хранилище хрома если значение получено
+	if(JSON.stringify(objProject).length > 0) {
+		chrome.storage.sync.set({
 			service: {
 				date: dat,
 				time: tim,
@@ -493,5 +494,6 @@ var dataCollection = function(settings) {
 				type: "data-collected"
 			});
 		});
+	}
 	return;
 }

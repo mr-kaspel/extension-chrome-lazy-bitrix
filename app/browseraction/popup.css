@@ -97,7 +97,6 @@ img {
 
 .modal-icons,
 .modal-foter {
-	margin-top: 10px;
 	padding: 4px;
 }
 
@@ -123,9 +122,15 @@ img {
 
 .flex-container {
 	display: flex;
+	align-items: center;
 	justify-content: space-between;
 	padding: 2px 0px;
 }
+
+.flex-container.progress{
+	justify-content: center
+}
+
 .modal-icons .flex{
 	margin: 0 auto;
 	width: 90%;
@@ -247,6 +252,26 @@ input[type="checkbox"]:checked:before {
 	transition: .5s;
 	-webkit-animation: bias-r .4s infinite linear;
 	animation: bias-r .4s linear;
+}
+
+progress {
+	-webkit-appearance: none;
+	margin-top: 10px;
+	background: #fff;
+	border: 0;
+	border-radius: 9px;
+	color: #9c3;
+	box-shadow: 4px 4px 2px rgba(0, 0, 0, .1);
+}
+
+progress::-webkit-progress-bar {
+	background: #656565;
+	border-radius: 9px;
+	overflow: hidden;
+}
+
+progress::-webkit-progress-value {
+	background: #248fea;
 }
 
 @-webkit-keyframes bias-l {
