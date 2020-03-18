@@ -9,9 +9,23 @@ body {
 }
 
 body {
-	background: #eee;
+	background-color: #565d65;
+	background-image: url('data:image/png;base64,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');
 	margin: 10px;
 	border-radius: 8px;
+	position: relative;
+}
+
+body:before {
+	content: '';
+	width: 50%;
+	height: 70px;
+	background: url(/icons/head-img.png) no-repeat;
+	background-size: contain;
+	position: absolute;
+	z-index: 1;
+	right: -8px;
+	top: 0px;
 }
 
 html {
@@ -24,12 +38,16 @@ h1 {
 	font-size: 22px;
 	font-weight: 400;
 	margin: 0;
-	color: #1f2c3c;
+	color: #fff;
+}
+
+mark {
+	background-color: #f75e5d;
 }
 
 a:link,
 a:visited {
-	color: #000000;
+	color: #fff;
 	outline: 0;
 	text-decoration: none;
 }
@@ -46,18 +64,18 @@ img {
 }
 
 .content {
-	border: 1px solid #eee;
 	border-radius: 30px 30px 8px 8px;
 	padding-top: 10px;
-	background: blanchedalmond;
+	background: #292b39;
+	position: relative;
+	z-index: 2;
 }
 
 .modal-content {
 	padding: 10px;
 	text-align: justify;
 	word-spacing: -0.3ex;
-	background: #fff;
-	border: 1px solid #eee;
+	border: 2px dashed #fff;
 	border-radius: 10px;
 	box-shadow: 4px 5px 9px 4px rgba(0, 0, 0, .1);
 	margin: 0 15px;
@@ -71,14 +89,13 @@ img {
 	display: inline-block;
 	padding: 0;
 	margin: 0;
+	color: #fff;
 }
 
 .modal-content > div {
 	margin: 0;
 	padding: 5px 15px;
-	border: 2px solid #248fea;
-	border-radius: 5px;
-	background: linear-gradient(45deg, #e8f3ff, #d0dbed);
+	color: #a2a2a2;
 }
 
 .modal-content > div > h4 {
@@ -93,6 +110,9 @@ img {
 
 .modal-foter {
 	border-top: 1px solid #fff;
+	position: relative;
+	overflow: hidden;
+	border-radius: 8px;
 }
 
 .modal-icons,
@@ -106,7 +126,7 @@ img {
 
 .modal-header small {
 	display: inline-block;
-	color: #000;
+	color: #2d2d3f;
 }
 
 .logo {
@@ -147,8 +167,15 @@ img {
 	border: none;
 	border-radius: 10px;
 	box-shadow: 0px 0px 9px 2px rgba(0, 0, 0, .3);
-	background: #4030e8;
 	margin-bottom: 10px;
+}
+
+.modal-icons .flex-container .transfer-tasks {
+	background: #f75e5d;
+}
+
+.modal-icons .flex-container .copy-report {
+	background: #3389ff;
 }
 
 .modal-icons .flex-container button:hover {
@@ -177,11 +204,13 @@ a.transfer-tasks {
 }
 
 .message-line {
-	color: lightslategray;
+	color: #fff;
 	text-align: left;
 	display: inline-block;
 	width: 100% !important;
 	font-size: 10px;
+	position: relative;
+	z-index: 2;
 }
 
 .modal-foter .flex-container button {
@@ -204,6 +233,18 @@ a.transfer-tasks {
 .flex .fa {
 	font-size: 40px;
 	color: #2f5876;
+}
+
+.modal-foter:before {
+	content: '';
+	width: 50%;
+	height: 60px;
+	background: url(/icons/footer-img.png) no-repeat;
+	background-size: contain;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	z-index: 1;
 }
 
 /*начало чекбокс*/
