@@ -3,23 +3,43 @@
 	background-color: #fff;
 	vertical-align: middle;
 }
+
 .column-plan {
-	background: palegreen;
+	background: #3bc8f5;
 	text-align: center;
 	border-bottom: 1px #eef2f4 solid;
+	border-radius: 2px;
 }
+
 .task-type-selector {
 		text-align: center;
 		border-bottom: 1px solid rgb(238, 242, 244);
 		width: 7%;
 		background: #fff;
 }
+
 .task-type-selector select {
-	border: none;
-	background: none;
+	width: 130px;
+	border: 1px solid #c6cdd3;
+	padding: 7px 10px;
+	margin-left: 10px;
+	color: #5c6470;
+	background: rgba(65, 198, 235, .2);
 	outline: none;
-	color: #2067b0;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	border-radius: 2px;
+	position: relative;
+	text-transform: uppercase;
+	font: 12px 'OpenSans-Semibold',"Helvetica Neue",Arial,Helvetica,sans-serif;
+	cursor: pointer;
 }
+
+.types-task option {
+	background: #fff;
+}
+
 .main-grid:not(.main-grid-ondrag) .main-grid-row:hover>.task-type-selector {
 	background-color: #f6f8f9;
 }

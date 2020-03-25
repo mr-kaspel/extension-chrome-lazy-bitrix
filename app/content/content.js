@@ -83,9 +83,13 @@ function taskTransfer(changData, countObj) {
 		if(dateTask) {
 			// устанавлеваем параметры для перноса задач
 			document.querySelector('.main-dropdown.main-grid-panel-control').click();
+			debugger;
 			document.querySelectorAll('.menu-popup-item.main-dropdown-item-not-selected')[2].click();
+			debugger;
 			document.querySelector('[name="ACTION_SET_DEADLINE_from"]').value = dateTask;
+			debugger;
 			document.querySelector('.main-grid-buttons.apply').click();
+			debugger;
 			document.querySelector('.popup-window-button.popup-window-button-accept').click();
 		}
 	}
@@ -115,14 +119,8 @@ function highlightTasks(bias, iter) {
 		// проверяем есть ли эта задача в плане на завтрашний день
 		if(checkTack) {
 			if(iter !== 1) continue;
-			// выделяем задачи из плана
-			/***
-				нужно использовать другой объект для выделения $(' .main-grid-row.main-grid-row-body td').click()
-
-				для вызова окна выбора действия объект $('.main-dropdown.main-grid-panel-control').click()
-				для выбора действия из встплывающего окна document.querySelectorAll('.menu-popup-item.main-dropdown-item-not-selected')[2].click()
-			***/
-			elem.querySelector('td').click();
+			// выделяем задачу из плана, если еще не выделена
+			if(!elem.querySelector('td input').checked) elem.querySelector('td').click();
 		} else {
 			// проверяем есть ли эта задача в исключениях
 			for(var j = 0; j < exclusion.length; j++) {
@@ -144,8 +142,7 @@ function highlightTasks(bias, iter) {
 		}
 	}
 	// проверить на выходные
-	// ..
-	return dIteration.getDate() + '.' + (dIteration.getMonth()+1) + '.' + dIteration.getFullYear() + ' 19:00:00';
+	return (String(dIteration.getDate()).length === 1 ? '0' + String(dIteration.getDate()) : dIteration.getDate()) + '.' + (String(dIteration.getMonth()+1).length === 1 ? '0' + String(dIteration.getMonth()+1) : dIteration.getMonth()+1) + '.' + dIteration.getFullYear() + ' 19:00:00';
 }
 
 /*
