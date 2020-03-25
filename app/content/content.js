@@ -367,7 +367,7 @@ function displayContentsMain(settings) {
 				elemSelecot += '</select>';
 				if(saveTasks[elemId] !== undefined && saveTasks[elemId]['checkbox']) attrChecked = 'checked="true"';
 				// добавитм новый чекбокс
-				arrRowTask[i].querySelector('.main-grid-cell-checkbox').insertAdjacentHTML('afterend', '<td class="column-plan"><input type="checkbox" value="' + elemId + '" class="in-terms-of" title="Добавить в план на следующий день" ' + attrChecked + '></td><td class="task-type-selector">' + elemSelecot + '</td>');
+				arrRowTask[i].querySelector('.main-grid-cell-checkbox').insertAdjacentHTML('afterend', '<td class="column-plan"><label for="elem-plan-' + elemId +'" class="column-plan-label"><input type="checkbox" id="elem-plan-' + elemId + '" value="' + elemId + '" class="in-terms-of" title="Добавить в план на следующий день" ' + attrChecked + '><span></span></label></td><td class="task-type-selector">' + elemSelecot + '</td>');
 
 				// добавляем кривой обработчик для chekboxa и select
 				arrRowTask[i].addEventListener('change', function(e) {
