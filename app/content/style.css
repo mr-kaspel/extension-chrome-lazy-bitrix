@@ -6,10 +6,11 @@
 
 .column-plan {
 	width: 30px;
-	background: #3bc8f5;
+	background: #eaf2d5;
 	text-align: center;
 	border-bottom: 1px #eef2f4 solid;
 	border-radius: 2px;
+	box-shadow: inset 0px 0px 4px 0px rgba(105, 79, 79, .3);
 }
 
 .column-plan-label {
@@ -26,11 +27,13 @@
 	display: inline-block;
 	width: 100%;
 	height: 100%;
+	background-size: contain;
+	background-position: center;
 }
 
 .column-plan-label > input:checked + span {
-	background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2210%22%20height%3D%2210%22%20viewBox%3D%220%200%2010%2010%22%3E%3Cpath%20fill%3D%22%23535C69%22%20fill-rule%3D%22evenodd%22%20d%3D%22M5.065%203.682L2.377.994%201.01%202.362%203.696%205.05.99%207.757l1.368%201.37%202.708-2.71%202.7%202.703%201.37-1.368-2.702-2.7%202.682-2.684L7.748%201%205.065%203.682z%22/%3E%3C/svg%3E');
-	background-repeat: no-repeat;
+	background: url('https://img.icons8.com/metro/26/000000/approval.png') no-repeat;
+	background-size: 20px 20px;
 	background-position: center;
 }
 
@@ -41,26 +44,105 @@
 		background: #fff;
 }
 
-.task-type-selector select {
-	width: 130px;
-	border: 1px solid #c6cdd3;
-	padding: 7px 10px;
-	margin-left: 10px;
-	color: #5c6470;
-	background: rgba(65, 198, 235, .2);
-	outline: none;
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	appearance: none;
-	border-radius: 2px;
+.special-selector-body {
+	display: inline-block;
 	position: relative;
-	text-transform: uppercase;
-	font: 12px 'OpenSans-Semibold',"Helvetica Neue",Arial,Helvetica,sans-serif;
-	cursor: pointer;
+	user-select: none;
+	outline: none;
 }
 
-.types-task option {
+.special-selector-elem {
+	width: 120px;
+	text-transform: uppercase;
+	text-align: left;
+	white-space: nowrap;
+	overflow: hidden;
+	display: inline-block;
+	padding: 5px 10px;
 	background: #fff;
+	vertical-align: middle;
+	border: 1px solid #eee;
+	border-radius: 2px;
+	cursor: pointer;
+	position: relative;
+	z-index: 2;
+}
+
+.special-selector-elem:before {
+	content: '';
+	display: inline-block;
+	width: 30px;
+	height: 100%;
+	background: #fff;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+}
+
+.special-selector-elem:after {
+	content: '';
+	background: url(https://img.icons8.com/metro/26/000000/expand-arrow.png) no-repeat;
+	background-size: contain;
+	width: 10px;
+	height: 10px;
+	display: inline-block;
+	transition: .5s;
+	position: absolute;
+	top: 33%;
+	right: 10px;
+}
+
+.special-selector-body.active .special-selector-elem:after {
+	transform: rotateZ(180deg);
+}
+
+.special-selector-elem > img {
+	width: 15px;
+	margin-right: 5px;
+	vertical-align: middle;
+}
+
+.special-selector-list {
+	min-width: 200px;
+	background: #fff;
+	text-align: left;
+	display: none;
+	padding: 8px 0;
+	overflow: hidden;
+	box-shadow: 0 7px 21px rgba(83,92,105,.12), 0 -1px 6px 0 rgba(83,92,105,.06);
+	z-index: 1;
+	position: absolute;
+	z-index: 9999;
+	top: 30px;
+	left: 0px;
+}
+
+.special-selector-body.active .special-selector-list {
+	display: block;
+}
+
+.special-selector-list > span {
+	display: inline-block;
+	width: 100%;
+	padding: 10px 15px;
+	vertical-align: middle;
+	cursor: pointer;
+	white-space: nowrap;
+	box-sizing: border-box;
+}
+
+.special-selector-list > span:hover {
+	background: #f6f8f9;
+}
+
+.special-selector-list > span:active {
+	background: lightblue;
+}
+
+.special-selector-list > span > img {
+	width: 15px;
+	margin-right: 10px;
+	vertical-align: middle;
 }
 
 .main-grid:not(.main-grid-ondrag) .main-grid-row:hover>.task-type-selector {
@@ -86,6 +168,10 @@
 
 .selection-line input {
 	vertical-align: middle;
+}
+
+.selection-line .special-selector-body {
+	margin-left: 10px;
 }
 
 .flags-red,

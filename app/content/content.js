@@ -177,7 +177,7 @@ function copyGeneratedReport(settings) {
 	if(!isNaN(document.getElementById('list-tasks'))) document.getElementById('footer').insertAdjacentHTML('afterend', '<textarea id="list-tasks"></textarea>');
 	for (var key in objPlan) {
 		if(objPlan[key]['checkbox']) {
-			typeTask = document.querySelector('[task-id="' + key + '"] option[value="' + document.querySelector('[task-id="' + key + '"]').value + '"]').innerHTML;
+			typeTask = document.querySelector('.special-selector-body[tabindex="' + key + '"]').getAttribute('title');
 			nameTask = document.querySelector('[href $= "' + key + '/"]').innerHTML;
 			hostName = document.querySelector('[href $= "' + key + '/"]').closest('.main-grid-row').querySelector('.tasks-list-crm-div-wrapper a');
 			hostName = isNaN(hostName) ? hostName.innerHTML.split(' - ')[0] : 'Общая задача';
@@ -244,11 +244,11 @@ function saveTask(typeTarget, idTask, valType) {
 				jsonTasks = JSON.stringify(jsonTasks);
 				setCookie('plannedTasks', jsonTasks);
 			} else {
-				// если объекта неть, добавляем
+				// если объекта нет, добавляем
 				jsonTasks[idTask] = {
 					id: idTask,
 					checkbox: valType,
-					select: document.querySelector('[task-id=\"' + idTask + '\"]').value
+					select: document.querySelector('.special-selector-body[tabindex="' + idTask + '"] .special-selector-elem').getAttribute('value')
 				};
 				jsonTasks = JSON.stringify(jsonTasks);
 				setCookie('plannedTasks', jsonTasks);
@@ -258,7 +258,7 @@ function saveTask(typeTarget, idTask, valType) {
 			objTask[idTask] = {
 				id: idTask,
 				checkbox: valType,
-				select: document.querySelector('[task-id=\"' + idTask + '\"]').value
+				select: document.querySelector('.special-selector-body[tabindex="' + idTask + '"] .special-selector-elem').getAttribute('value')
 			};
 			objTask = JSON.stringify(objTask);
 			//console.log(objTask);
@@ -321,7 +321,6 @@ function displayContentsMain(settings) {
 		var arrRowTask = document.querySelectorAll('.main-grid-row.main-grid-row-body');
 		var elemCheckbox = ''; // чекбокс
 		var elemId = ''; // идентификатор задачи
-		var elemSelecot = ''; // селектор типа задач
 		var saveTasks = getCookie('plannedTasks')!== undefined ? JSON.parse(getCookie('plannedTasks')) : '';
 		var attrChecked = '';
 		var attrSelect = '';
@@ -356,23 +355,88 @@ function displayContentsMain(settings) {
 
 			// проверяем отображать только флаги или нет
 			if(!settings.toggle.flags) {
-				elemSelecot = '<select task-id="' + elemId + '" class="types-task">';
+				var div = document.createElement('div'),
+						elemOption = '',
+						elemSelected = '',
+						elemValue = '';
+
+				div.className = "special-selector-body";
+				div.setAttribute('tabindex', elemId);
+
 				for(var j = 0; j < settings.options.types.length; j++) {
-					attrSelect = '';
 					if(saveTasks[elemId] !== undefined && Number(saveTasks[elemId]['select']) === j) {
-						attrSelect = 'selected';
-					} else if(Number(settings.options.main) === j) attrSelect = 'selected';
-					elemSelecot += '<option ' + attrSelect + ' value="' + j + '">' + settings.options.types[j] + '</option>';
+						elemSelected = settings.options.types[j];
+						elemValue = j;
+					} else if(Number(settings.options.main) === j) {
+						elemSelected = settings.options.types[j];
+						elemValue = j;
+					}
+					elemOption += '<span value="' + j + '">' + settings.options.types[j] + '</span>';
 				}
-				elemSelecot += '</select>';
+				var titleSelect = (elemSelected.indexOf('|') !== -1 ? elemSelected.split('|')[1] : elemSelected);
+				div.setAttribute('title', titleSelect);
+
+				div.innerHTML = '<div class="special-selector-elem" value="' + elemValue + '">' + titleSelect + '</div><div class="special-selector-list">' + elemOption + '</div>';
+
 				if(saveTasks[elemId] !== undefined && saveTasks[elemId]['checkbox']) attrChecked = 'checked="true"';
 				// добавитм новый чекбокс
-				arrRowTask[i].querySelector('.main-grid-cell-checkbox').insertAdjacentHTML('afterend', '<td class="column-plan"><label for="elem-plan-' + elemId +'" class="column-plan-label"><input type="checkbox" id="elem-plan-' + elemId + '" value="' + elemId + '" class="in-terms-of" title="Добавить в план на следующий день" ' + attrChecked + '><span></span></label></td><td class="task-type-selector">' + elemSelecot + '</td>');
+				arrRowTask[i].querySelector('.main-grid-cell-checkbox').insertAdjacentHTML('afterend', '<td class="column-plan"><label for="elem-plan-' + elemId +'" class="column-plan-label"><input type="checkbox" id="elem-plan-' + elemId + '" value="' + elemId + '" class="in-terms-of" title="Добавить в план на следующий день" ' + attrChecked + '><span></span></label></td><td class="task-type-selector"></td>');
+
+				arrRowTask[i].querySelector('.task-type-selector').append(div);
+
+				var customSelect = arrRowTask[i].querySelector('.special-selector-body');
+
+				customSelect.querySelector('.special-selector-elem').addEventListener('click', function(e) {
+					if(this.parentNode.classList.value.indexOf('special-selector-body') !== -1) {
+						// изменяем расположение выпадающего списка
+							var thisSelectId = this.parentNode.getAttribute('tabindex'), // идентификатор задачи
+									lastSelectId = arrRowTask[arrRowTask.length-1].querySelector('.special-selector-body').getAttribute('tabindex'), // идентификатор последней задачи
+									lineHeight = arrRowTask[arrRowTask.length-1].offsetHeight; // высота строки последней задачи
+
+									this.parentNode.querySelector('.special-selector-list').style.display = 'block';
+
+									var listРeight = this.parentNode.querySelector('.special-selector-list').offsetHeight; // высота списка перечная типов
+									
+									this.parentNode.querySelector('.special-selector-list').style.display = '';
+
+							if(thisSelectId === lastSelectId) {
+								this.parentNode.querySelector('.special-selector-list').style.top = '-' + listРeight + 'px';
+							} else {
+								for(var k = arrRowTask.length-1; k !== ((arrRowTask.length-1) - Math.ceil(listРeight/lineHeight)); k--) {
+									var taskExceptions = arrRowTask[k].querySelector('.special-selector-body').getAttribute('tabindex')
+									if(thisSelectId == taskExceptions) {
+										this.parentNode.querySelector('.special-selector-list').style.top = '-' + listРeight + 'px';
+										break;
+									}
+								}
+							}
+
+							this.parentNode.classList.toggle('active');
+					}
+				});
+
+				customSelect.addEventListener('blur', function() {
+					if(this.classList.value.indexOf('special-selector-body') !== -1) this.classList.remove('active');
+				});
+
+				customSelect.querySelector('.special-selector-list').addEventListener('click', function(e) {
+					if(e.target.tagName.indexOf("SPAN") !== -1) {
+						if(this.parentNode.classList.value.indexOf('special-selector-body') !== -1) {
+							this.parentNode.querySelector('.special-selector-elem').setAttribute('value', e.target.getAttribute('value'));
+							var titleSelect = (e.target.innerHTML.indexOf('|') !== -1 ? e.target.innerHTML.split('|')[1] : e.target.innerHTML);
+							this.parentNode.setAttribute('title', titleSelect);
+							this.parentNode.querySelector('.special-selector-elem').innerHTML = titleSelect;
+							this.parentNode.classList.remove('active');
+							this.parentNode.blur();
+
+							saveTask('select', this.parentNode.getAttribute('tabindex'), e.target.getAttribute('value'));
+						}
+					}
+				});
 
 				// добавляем кривой обработчик для chekboxa и select
 				arrRowTask[i].addEventListener('change', function(e) {
 					if(e.target.className.indexOf('in-terms-of') !== -1) saveTask('checkbox', e.target.value, e.target.checked);
-					if(e.target.className.indexOf('types-task') !== -1) saveTask('select', e.target.getAttribute('task-id'), e.target.value);
 				});
 			}
 		}
@@ -384,7 +448,6 @@ function displayContentsTask(settings) {
 	if(settings.toggle.switch) {
 		var addTextTask = document.querySelector('.task-detail-subtitle-status'),
 			elemId = addTextTask.innerText.replace(/\D+/g,""), // идентификатор задачи
-			elemSelecot = '<select task-id="' + elemId + '" class="types-task">', // селектор типа задач
 			saveTasks = getCookie('plannedTasks')!== undefined ? JSON.parse(getCookie('plannedTasks')) : '',
 			attrChecked = '',
 			attrSelect = '',
@@ -393,23 +456,63 @@ function displayContentsTask(settings) {
 
 		// проверяем отображать только флаги или нет
 		if(!settings.toggle.flags) {
-			for(var i = 0; i < settings.options.types.length; i++) {
-				attrSelect = '';
-				if(saveTasks[elemId] !== undefined && Number(saveTasks[elemId]['select']) === i) {
-					attrSelect = 'selected';
-				} else if(Number(settings.options.main) === i ) {
-					attrSelect = 'selected';
-				}
-				elemSelecot += '<option ' + attrSelect + ' value="' + i + '">' + settings.options.types[i] + '</option>';
-			}
-			elemSelecot += '</select>';
-			if(saveTasks[elemId] !== undefined && collection && saveTasks[elemId]['checkbox']) attrChecked = 'checked="true"';
-			addTextTask.insertAdjacentHTML('afterend', '<div class="selection-line"><label><b>Добавить в план на следующий день</b> <input type="checkbox" value="' + elemId + '" class="in-terms-of" title="Добавить в план на следующий день" ' + attrChecked + '></label> / <label><b>Тип задачи</b> ' + elemSelecot + '</label></div>');
+				var div = document.createElement('div'),
+						elemOption = '',
+						elemSelected = '',
+						elemValue = '';
 
-			// добавляем кривой обработчик для chekboxa и select
+				div.className = "special-selector-body";
+				div.setAttribute('tabindex', elemId);
+
+				for(var j = 0; j < settings.options.types.length; j++) {
+					if(saveTasks[elemId] !== undefined && Number(saveTasks[elemId]['select']) === j) {
+						elemSelected = settings.options.types[j];
+						elemValue = j;
+					} else if(Number(settings.options.main) === j) {
+						elemSelected = settings.options.types[j];
+						elemValue = j;
+					}
+					elemOption += '<span value="' + j + '">' + settings.options.types[j] + '</span>';
+				}
+
+				var titleSelect = (elemSelected.indexOf('|') !== -1 ? elemSelected.split('|')[1] : elemSelected);
+				div.setAttribute('title', titleSelect);
+
+				div.innerHTML = '<div class="special-selector-elem" value="' + elemValue + '">' + titleSelect + '</div><div class="special-selector-list">' + elemOption + '</div>';
+
+			if(saveTasks[elemId] !== undefined && collection && saveTasks[elemId]['checkbox']) attrChecked = 'checked="true"';
+			addTextTask.insertAdjacentHTML('afterend', '<div class="selection-line"><label><b>Добавить в план на следующий день</b> <input type="checkbox" value="' + elemId + '" class="in-terms-of" title="Добавить в план на следующий день" ' + attrChecked + '></label> / <label><b>Тип задачи</b></label></div>');
+
+				document.querySelectorAll('.selection-line b')[1].after(div);
+
+				var customSelect = document.querySelector('.special-selector-body');
+
+				customSelect.querySelector('.special-selector-elem').addEventListener('click', function(e) {
+					if(this.parentNode.classList.value.indexOf('special-selector-body') !== -1) this.parentNode.classList.toggle('active');
+				});
+
+				customSelect.addEventListener('blur', function() {
+					if(this.classList.value.indexOf('special-selector-body') !== -1) this.classList.remove('active');
+				});
+
+				customSelect.querySelector('.special-selector-list').addEventListener('click', function(e) {
+					if(e.target.tagName.indexOf("SPAN") !== -1) {
+						if(this.parentNode.classList.value.indexOf('special-selector-body') !== -1) {
+							this.parentNode.querySelector('.special-selector-elem').setAttribute('value', e.target.getAttribute('value'));
+							var titleSelect = (e.target.innerHTML.indexOf('|') !== -1 ? e.target.innerHTML.split('|')[1] : e.target.innerHTML);
+							this.parentNode.setAttribute('title', titleSelect);
+							this.parentNode.querySelector('.special-selector-elem').innerHTML = titleSelect;
+							this.parentNode.classList.remove('active');
+							this.parentNode.blur();
+
+							saveTask('select', this.parentNode.getAttribute('tabindex'), e.target.getAttribute('value'));
+						}
+					}
+				});
+
+			// добавляем обработчик для chekboxa
 			document.querySelector('.task-detail-header').addEventListener('change', function(e) {
 				if(e.target.className.indexOf('in-terms-of') !== -1) saveTask('checkbox', e.target.value, e.target.checked);
-				if(e.target.className.indexOf('types-task') !== -1) saveTask('select', e.target.getAttribute('task-id'), e.target.value);
 			});
 		}
 
